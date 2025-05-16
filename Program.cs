@@ -1,5 +1,6 @@
 using CursoMediatRCQRS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+builder.Services.AddMediatR(options =>
+{
+    options.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
 });
 
 var app = builder.Build();
