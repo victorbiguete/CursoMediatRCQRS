@@ -1,5 +1,6 @@
 ﻿using CursoMediatRCQRS.Features.Users.Commands.Create;
 using CursoMediatRCQRS.Features.Users.Queries.GetAllUsers;
+using CursoMediatRCQRS.Features.Users.Queries.GetUserById;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +36,17 @@ namespace CursoMediatRCQRS.Controllers
 
             if(result == null)
                 return NotFound("Não Existe Usuarios Cadastrados");
+
+            return Ok(result);
+        }
+
+        [HttpGet("/GetUserById/{id}")]
+        public async Task<IActionResult> GetUserById(Guid id)
+        {
+            var result = await _mediator.Send(new GetUserByIdQuery(id));
+
+            if (result == null)
+                return NotFound("Não Existe Esse Usuario Cadastrado");
 
             return Ok(result);
         }
