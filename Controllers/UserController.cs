@@ -1,4 +1,5 @@
 ﻿using CursoMediatRCQRS.Features.Users.Commands.Create;
+using CursoMediatRCQRS.Features.Users.Commands.Update;
 using CursoMediatRCQRS.Features.Users.Queries.GetAllUsers;
 using CursoMediatRCQRS.Features.Users.Queries.GetUserById;
 using MediatR;
@@ -49,6 +50,17 @@ namespace CursoMediatRCQRS.Controllers
                 return NotFound("Não Existe Esse Usuario Cadastrado");
 
             return Ok(result);
+        }
+
+        [HttpPut("/Update")]
+        public async Task<IActionResult> Update(UpdateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result == false)
+                return BadRequest("Ocorreu um Erro ao Atualizar o Usuario");
+
+            return Ok("Usuario atualizado com Sucesso");
         }
     }
 }
