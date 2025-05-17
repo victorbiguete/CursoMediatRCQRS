@@ -1,4 +1,5 @@
 ﻿using CursoMediatRCQRS.Features.Users.Commands.Create;
+using CursoMediatRCQRS.Features.Users.Queries.GetAllUsers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace CursoMediatRCQRS.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("/Create")]
         public async Task<IActionResult> Create(CreateUserCommand command)
         {
             var id = await _mediator.Send(command);
@@ -25,6 +26,17 @@ namespace CursoMediatRCQRS.Controllers
                 return BadRequest("Falha na criação do usuario");
 
             return Created();
+        }
+
+        [HttpGet("/GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _mediator.Send(new GetAllUsersQuery());
+
+            if(result == null)
+                return NotFound("Não Existe Usuarios Cadastrados");
+
+            return Ok(result);
         }
     }
 }
